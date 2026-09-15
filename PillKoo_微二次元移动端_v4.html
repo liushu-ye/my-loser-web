@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#f7f9fc" />
+<title>PillKoo · Personal Space</title>
+<style>
+:root{
+  --bg:#f5f7fb;--card:rgba(255,255,255,.82);--text:#202735;--muted:#7c8799;
+  --line:rgba(40,50,70,.08);--blue:#3a8cff;--green:#5bda7d;--purple:#7a3cff;--gold:#ffb236;
+  --shadow:0 14px 40px rgba(48,65,95,.08);--radius:24px;--nav-h:68px;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:88px}body{margin:0;background:radial-gradient(circle at 15% 0%,#eef5ff 0,transparent 28%),radial-gradient(circle at 90% 10%,#fff2df 0,transparent 25%),var(--bg);color:var(--text);font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.6}a{text-decoration:none;color:inherit}button{font:inherit}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.3;background-image:radial-gradient(#aeb8c7 .7px,transparent .7px);background-size:18px 18px;mask-image:linear-gradient(to bottom,black,transparent 80%)}
+.container{width:min(1080px,calc(100% - 28px));margin:auto}
+/* top compact app bar */
+.topbar{position:fixed;z-index:100;top:0;left:0;right:0;height:64px;padding:8px 14px;transform:translateY(-110%);transition:transform .35s ease,opacity .35s ease;opacity:0;pointer-events:none}
+.topbar.show{transform:translateY(0);opacity:1;pointer-events:auto}
+.topbar-inner{height:100%;max-width:1080px;margin:auto;padding:0 10px;border:1px solid rgba(255,255,255,.75);background:rgba(255,255,255,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 10px 30px rgba(45,60,85,.1);border-radius:18px;display:flex;align-items:center;justify-content:space-between}
+.mini-profile{display:flex;align-items:center;gap:9px}.mini-avatar{width:38px;height:38px;border-radius:12px;object-fit:cover;background:#edf2f8}.mini-name{font-weight:800;font-size:14px}.mini-status{font-size:10px;color:var(--muted)}.top-actions{display:flex;gap:7px}.icon-btn{border:0;background:#f2f5f9;color:#566274;width:38px;height:38px;border-radius:12px;cursor:pointer;display:grid;place-items:center}.icon-btn:hover{background:#e9eef6}
+/* intro */
+.hero{padding:22px 0 18px}.hero-grid{display:grid;grid-template-columns:145px 1fr;gap:14px;align-items:stretch}.identity,.carousel{border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+.identity{border-radius:26px;padding:13px 12px;display:flex;flex-direction:column;align-items:center;text-align:center}.avatar{width:72px;height:72px;border-radius:22px;object-fit:cover;background:#eef3fa;margin-bottom:7px}.name{font-size:18px;font-weight:900;letter-spacing:-.04em}.handle{font-size:10px;color:var(--muted);margin-top:-2px}.contacts{display:flex;gap:5px;margin:10px 0}.contact{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:#f0f4f8;color:#667285;font-size:12px}.tiny-qrs{display:flex;gap:5px}.tiny-qr{width:38px;height:38px;border-radius:9px;background:white;border:1px solid var(--line);padding:3px}.tiny-qr img{width:100%;height:100%;object-fit:cover;border-radius:5px}.identity-note{font-size:9px;color:#a0a8b5;margin-top:auto;padding-top:8px}
+.carousel{position:relative;min-height:225px;border-radius:26px;overflow:hidden}.slides{height:100%;position:relative}.slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .55s ease}.slide.active{opacity:1;pointer-events:auto}.slide img{width:100%;height:100%;object-fit:cover;display:block}.slide:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(19,27,40,.68),rgba(19,27,40,.08) 68%,transparent)}.slide-copy{position:absolute;z-index:2;left:22px;bottom:24px;color:white;max-width:70%}.eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.8}.slide-title{font-size:25px;font-weight:900;line-height:1.1;margin:5px 0}.slide-text{font-size:11px;opacity:.88}.dots{position:absolute;z-index:4;right:18px;bottom:17px;display:flex;gap:5px}.dot{width:6px;height:6px;border:0;border-radius:99px;padding:0;background:rgba(255,255,255,.45);cursor:pointer}.dot.active{width:18px;background:#fff}.hero-badge{position:absolute;z-index:4;right:15px;top:14px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);color:#fff;padding:5px 8px;border-radius:99px;font-size:9px;backdrop-filter:blur(8px)}
+/* content */
+main{padding-bottom:100px}.section{scroll-margin-top:84px;margin:16px 0}.section-card{background:rgba(255,255,255,.74);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:30px;padding:22px}.section-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:16px}.section-no{font-size:10px;letter-spacing:.15em;color:var(--muted)}h2{font-size:25px;line-height:1;margin:4px 0 0;letter-spacing:-.05em}.section-desc{font-size:11px;color:var(--muted);max-width:210px;text-align:right}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.card{min-height:140px;border-radius:19px;border:1px solid var(--line);background:#fff;padding:15px;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease}.card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(45,60,85,.09)}.card .emoji{font-size:23px}.card h3{font-size:15px;margin:9px 0 4px}.card p{font-size:10px;color:var(--muted);margin:0}.arrow{position:absolute;right:13px;bottom:12px;color:#a2acbb}.blue{--accent:var(--blue)}.green{--accent:var(--green)}.purple{--accent:var(--purple)}.gold{--accent:var(--gold)}.card:before{content:"";position:absolute;left:0;top:0;width:4px;height:100%;background:var(--accent);opacity:.8}
+.menu{display:grid;grid-template-columns:1.2fr .8fr;gap:10px}.menu-box,.group-box{border:1px solid var(--line);background:#fff;border-radius:20px;padding:17px}.menu-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed #e7ebf0;font-size:12px}.menu-row:last-child{border-bottom:0}.price{font-weight:800}.group-links{display:grid;gap:8px;margin-top:8px}.group-link{padding:11px 12px;border-radius:12px;background:#f5f7fa;font-size:11px}
+.gallery{display:grid;grid-template-columns:1.25fr .75fr .75fr;gap:9px}.gallery img{width:100%;height:190px;object-fit:cover;border-radius:18px;display:block}.gallery img:nth-child(2),.gallery img:nth-child(3){height:190px}.action-row{display:flex;justify-content:space-between;align-items:center;margin-top:13px;padding:13px 15px;background:#fff;border:1px solid var(--line);border-radius:16px}.action-row span{font-size:11px;color:var(--muted)}.btn{padding:8px 13px;border-radius:11px;background:var(--text);color:#fff;font-size:10px;font-weight:700}
+.game-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}.game{height:185px;border-radius:18px;overflow:hidden;position:relative}.game img{width:100%;height:100%;object-fit:cover}.game:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(0,0,0,.65))}.game span{position:absolute;z-index:2;bottom:12px;left:13px;color:#fff;font-weight:800;font-size:12px}.character{display:grid;grid-template-columns:120px 1fr;gap:15px;align-items:center;margin-top:10px;padding:13px;border-radius:20px;background:#fff;border:1px solid var(--line)}.character img{width:120px;height:140px;object-fit:cover;border-radius:16px;background:#edf2f7}.character h3{margin:0 0 4px}.character p{font-size:11px;color:var(--muted);margin:0 0 10px}
+/* bottom dock */
+.bottom-dock{position:fixed;z-index:110;left:50%;bottom:calc(10px + env(safe-area-inset-bottom));transform:translate(-50%,130%);width:min(520px,calc(100% - 20px));padding:7px;border:1px solid rgba(255,255,255,.8);background:rgba(255,255,255,.78);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 14px 38px rgba(45,60,85,.16);border-radius:20px;transition:transform .35s ease}.bottom-dock.show{transform:translate(-50%,0)}.dock-items{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}.dock-item{border:0;background:transparent;padding:3px;cursor:pointer;color:#7c8797;min-width:0}.thumb{height:40px;border-radius:12px;overflow:hidden;background:#e9eef4;position:relative;border:2px solid transparent}.thumb img{width:100%;height:100%;object-fit:cover}.dock-label{font-size:9px;margin-top:3px;display:block}.dock-item.active{color:var(--text)}.dock-item.active .thumb{border-color:var(--text);transform:translateY(-2px);box-shadow:0 5px 14px rgba(35,45,60,.14)}
+.footer{text-align:center;padding:18px 0 110px;color:#a2aab6;font-size:9px}
+@media(max-width:620px){.container{width:min(100% - 16px,520px)}.hero{padding-top:10px}.hero-grid{grid-template-columns:112px 1fr;gap:8px}.identity{border-radius:20px;padding:10px 7px}.avatar{width:56px;height:56px;border-radius:17px}.name{font-size:15px}.handle{font-size:8px}.contacts{margin:6px 0}.contact{width:24px;height:24px;font-size:10px}.tiny-qr{width:31px;height:31px}.identity-note{font-size:7px}.carousel{min-height:190px;border-radius:20px}.slide-copy{left:15px;bottom:18px}.slide-title{font-size:20px}.slide-text{font-size:9px}.hero-badge{right:10px;top:10px}.section-card{padding:16px;border-radius:23px}.section-head{align-items:start}.section-desc{font-size:9px}.cards{grid-template-columns:1fr}.card{min-height:106px}.menu{grid-template-columns:1fr}.gallery{grid-template-columns:1.2fr .8fr}.gallery img,.gallery img:nth-child(2),.gallery img:nth-child(3){height:150px}.game-grid{grid-template-columns:1fr 1fr}.game{height:155px}.character{grid-template-columns:90px 1fr}.character img{width:90px;height:115px}.topbar{height:58px;padding:7px 9px}.topbar-inner{border-radius:16px}.mini-avatar{width:34px;height:34px}.mini-name{font-size:13px}.icon-btn{width:34px;height:34px}.bottom-dock{bottom:calc(7px + env(safe-area-inset-bottom));border-radius:18px}.thumb{height:37px}}
+@media(min-width:900px){body{padding-bottom:0}.hero{padding-top:28px}.hero-grid{grid-template-columns:180px 1fr}.identity{padding:18px}.avatar{width:86px;height:86px}.carousel{min-height:270px}.section{margin:24px 0}.section-card{padding:28px}.bottom-dock{width:560px}}
+</style>
+</head>
+<body>
+<!-- 滑动后出现的 App 顶部导航 -->
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <a class="mini-profile" href="#top" aria-label="回到顶部">
+      <img class="mini-avatar" src="https://api.dicebear.com/9.x/notionists/svg?seed=PillKooHero&backgroundColor=transparent" alt="头像">
+      <div><div class="mini-name">PillKoo</div><div class="mini-status">PERSONAL SPACE</div></div>
+    </a>
+    <div class="top-actions">
+      <button class="icon-btn" onclick="location.href='#contact'" aria-label="联系方式">⌁</button>
+      <button class="icon-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">↑</button>
+    </div>
+  </div>
+</header>
+
+<div id="top"></div>
+<section class="hero container">
+  <div class="hero-grid">
+    <aside class="identity" id="contact">
+      <img class="avatar" src="https://api.dicebear.com/9.x/notionists/svg?seed=PillKooHero&backgroundColor=transparent" alt="PillKoo头像">
+      <div class="name">PillKoo</div><div class="handle">个人空间 · 安阳</div>
+      <div class="contacts"><a class="contact" href="tel:13800000000">☎</a><a class="contact" href="https://wpa.qq.com/msgrd?v=3&uin=123456789&site=qq&menu=yes">Q</a><a class="contact" href="#contact">W</a></div>
+      <div class="tiny-qrs">
+        <img class="tiny-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fexample.com%2Fqq" alt="QQ二维码">
+        <img class="tiny-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fexample.com%2Fwechat" alt="微信二维码">
+      </div>
+      <div class="identity-note">扫码 / 联系 / 认识一下</div>
+    </aside>
+
+    <div class="carousel" id="carousel">
+      <div class="hero-badge">RECENT / 04</div>
+      <div class="slides">
+        <a class="slide active" href="#stall"><img src="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&w=1200&q=80" alt="摆摊"><div class="slide-copy"><div class="eyebrow">01 · STALL</div><div class="slide-title">最近在研究怎么摆摊</div><div class="slide-text">地点、合作、低成本方案，都放在这里。</div></div></a>
+        <a class="slide" href="#food"><img src="https://images.unsplash.com/photo-1557872943-16a5ac26437e?auto=format&fit=crop&w=1200&q=80" alt="点餐"><div class="slide-copy"><div class="eyebrow">02 · FOOD</div><div class="slide-title">今天吃什么？</div><div class="slide-text">每日菜单 + 合适时间配送。</div></div></a>
+        <a class="slide" href="#pea"><img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=80" alt="点心"><div class="slide-copy"><div class="eyebrow">03 · PEA CAKE</div><div class="slide-title">豌豆糕</div><div class="slide-text">现做、小批量、慢慢试。</div></div></a>
+        <a class="slide" href="#games"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80" alt="游戏"><div class="slide-copy"><div class="eyebrow">04 · GAMES</div><div class="slide-title">也做一点游戏</div><div class="slide-text">游戏相关服务统一前往信息记录板。</div></div></a>
+      </div>
+      <div class="dots" id="dots"></div>
+    </div>
+  </div>
+</section>
+
+<main class="container">
+  <section class="section" id="stall">
+    <div class="section-card">
+      <div class="section-head"><div><div class="section-no">01 / STALL</div><h2>摆摊</h2></div><div class="section-desc">想摆、想合作、想找地点，从这里开始。</div></div>
+      <div class="cards">
+        <a class="card blue" href="https://example.com/anyang-stall-locations" target="_blank"><div class="emoji">📍</div><h3>安阳摆摊地点</h3><p>本地可摆摊地点参考，点击直接查看。</p><span class="arrow">↗</span></a>
+        <a class="card purple" href="https://example.com/contact" target="_blank"><div class="emoji">🧩</div><h3>共同创作</h3><p>想一起做点东西？联系我加入创作。</p><span class="arrow">↗</span></a>
+        <a class="card green" href="https://example.com/contact" target="_blank"><div class="emoji">🛒</div><h3>低成本摆摊</h3><p>想试试摆摊，但不想一次投入太多。</p><span class="arrow">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="food">
+    <div class="section-card">
+      <div class="section-head"><div><div class="section-no">02 / FOOD</div><h2>摊位点餐</h2></div><div class="section-desc">当天菜单、预约、配送与进群。</div></div>
+      <div class="menu">
+        <div class="menu-box"><div class="menu-row"><span>今日主食</span><span class="price">¥ 现场更新</span></div><div class="menu-row"><span>香肠 / 鸡蛋 / 鹌鹑蛋</span><span>可选</span></div><div class="menu-row"><span>金针菇 / 香菜 / 小鱼干</span><span>可加</span></div><div class="menu-row"><span>适合配送时间</span><span class="price">每日更新</span></div></div>
+        <div class="group-box"><div class="section-no">JOIN</div><div class="group-links"><a class="group-link" href="#contact">QQ群 · 预约 / 菜单</a><a class="group-link" href="#contact">微信群 · 当天配送</a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="pea">
+    <div class="section-card">
+      <div class="section-head"><div><div class="section-no">03 / PEA CAKE</div><h2>豌豆糕</h2></div><div class="section-desc">独立的小项目，图片先用外部占位图。</div></div>
+      <div class="gallery"><img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=900&q=80" alt="豌豆糕占位图"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80" alt="点心占位图"><img src="https://images.unsplash.com/photo-1599785209707-a456fc1337bb?auto=format&fit=crop&w=700&q=80" alt="甜点占位图"></div>
+      <div class="action-row"><span>想尝试 / 预订，可以直接联系。</span><a class="btn" href="https://example.com/pea-cake-order" target="_blank">了解 / 下单 ↗</a></div>
+    </div>
+  </section>
+
+  <section class="section" id="games">
+    <div class="section-card">
+      <div class="section-head"><div><div class="section-no">04 / GAMES</div><h2>游戏</h2></div><div class="section-desc">游戏、体验记录以及相关服务。</div></div>
+      <div class="game-grid"><div class="game"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80" alt="游戏1"><span>游戏记录</span></div><div class="game"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" alt="游戏2"><span>设备与体验</span></div><div class="game"><img src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=800&q=80" alt="游戏3"><span>正在玩的东西</span></div></div>
+      <div class="character"><img src="https://api.dicebear.com/9.x/notionists/svg?seed=PillKooGamer&backgroundColor=transparent" alt="卡通角色"><div><h3>小角色也会出场</h3><p>这里可以替换成你的原创卡通形象。不同内容板块可以使用不同动作。</p><a class="btn" href="https://pillkoo.com/" target="_blank">信息记录板 ↗</a></div></div>
+    </div>
+  </section>
+</main>
+
+<nav class="bottom-dock" id="bottomDock" aria-label="内容导航">
+  <div class="dock-items">
+    <button class="dock-item active" data-target="stall"><div class="thumb"><img src="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&w=300&q=70" alt=""></div><span class="dock-label">摆摊</span></button>
+    <button class="dock-item" data-target="food"><div class="thumb"><img src="https://images.unsplash.com/photo-1557872943-16a5ac26437e?auto=format&fit=crop&w=300&q=70" alt=""></div><span class="dock-label">点餐</span></button>
+    <button class="dock-item" data-target="pea"><div class="thumb"><img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=300&q=70" alt=""></div><span class="dock-label">豌豆糕</span></button>
+    <button class="dock-item" data-target="games"><div class="thumb"><img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=300&q=70" alt=""></div><span class="dock-label">游戏</span></button>
+  </div>
+</nav>
+
+<footer class="footer">PillKoo · Personal Space · 外部图片与二维码均可替换</footer>
+<script>
+const slides=[...document.querySelectorAll('.slide')],dots=document.getElementById('dots');
+let current=0,timer;slides.forEach((_,i)=>{const b=document.createElement('button');b.className='dot'+(i===0?' active':'');b.onclick=()=>showSlide(i);dots.appendChild(b)});
+function showSlide(i){current=(i+slides.length)%slides.length;slides.forEach((s,n)=>s.classList.toggle('active',n===current));[...dots.children].forEach((d,n)=>d.classList.toggle('active',n===current))}
+function start(){clearInterval(timer);timer=setInterval(()=>showSlide(current+1),4500)}start();document.getElementById('carousel').addEventListener('mouseenter',()=>clearInterval(timer));document.getElementById('carousel').addEventListener('mouseleave',start);
+let lastY=window.scrollY;
+const topbar=document.getElementById('topbar'),dock=document.getElementById('bottomDock'),hero=document.querySelector('.hero');
+const observer=new IntersectionObserver(entries=>{const visible=entries[0].isIntersecting;topbar.classList.toggle('show',!visible);dock.classList.toggle('show',!visible)},{threshold:.08});observer.observe(hero);
+const sections=[...document.querySelectorAll('.section')],dockItems=[...document.querySelectorAll('.dock-item')];
+dockItems.forEach(item=>item.addEventListener('click',()=>document.getElementById(item.dataset.target).scrollIntoView({behavior:'smooth'})));
+const sectionObserver=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(!visible)return;dockItems.forEach(x=>x.classList.toggle('active',x.dataset.target===visible.target.id))},{rootMargin:'-20% 0px -55% 0px',threshold:[0,.15,.35,.6]});sections.forEach(s=>sectionObserver.observe(s));
+window.addEventListener('scroll',()=>{const y=window.scrollY;if(y<20){topbar.classList.remove('show');dock.classList.remove('show')}lastY=y},{passive:true});
+</script>
+</body>
+</html>
